@@ -29,7 +29,7 @@ public class PuneBankController extends BankOfIndia {
         puneDatabase.createTable();
     }
 
-    List<BankUser> bankUsers = new ArrayList(); 
+    List<BankUser> bankUsers = new ArrayList<>(); 
     Scanner sc = new Scanner(System.in);
     public void userRegistration(){
         BankUser bankUser = new BankUser();  

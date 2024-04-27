@@ -37,6 +37,7 @@ public class BankOfPune extends PuneBankController{
                     break;    
                 case 6:
                     System.out.println("!!! System closed see you tomorro !!!");
+                    sc.close();
                     return;
                 default:
                     System.out.println(">>>>>>>>>> Please select between 1-5");

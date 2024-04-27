@@ -1,6 +1,5 @@
 package AgeCalculator;
 import java.util.*;
-import java.time.LocalDate;
 
 // 25-05-2002 13-02-2024
 // 2024-2002 = 22

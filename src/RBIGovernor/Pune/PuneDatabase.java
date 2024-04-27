@@ -1,6 +1,4 @@
 package RBIGovernor.Pune;
-import java.io.*;
-import java.sql.*;
 
 import DataBaseJDBC.BankUser;
 import DataBaseJDBC.DatabaseController;
