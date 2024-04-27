@@ -1,3 +1,4 @@
+package DataBaseJDBC;
 public class BankUser {
     private String name; // 1 
     private String userId; 

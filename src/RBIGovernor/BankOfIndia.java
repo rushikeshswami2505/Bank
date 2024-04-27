@@ -1,6 +1,7 @@
+package RBIGovernor;
 public abstract class BankOfIndia {
 
-    BankDetails bankDetails = new BankDetails();
+    public BankDetails bankDetails = new BankDetails();
 
     public abstract void setBankDetails();
 

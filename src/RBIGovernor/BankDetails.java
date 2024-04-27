@@ -1,3 +1,4 @@
+package RBIGovernor;
 public class BankDetails {
     
     String bankName;

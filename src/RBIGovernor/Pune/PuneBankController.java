@@ -1,4 +1,7 @@
+package RBIGovernor.Pune;
 import AgeCalculator.AgeController;
+import DataBaseJDBC.BankUser;
+import RBIGovernor.BankOfIndia;
 
 import java.util.*;
 
@@ -22,8 +25,8 @@ public class PuneBankController extends BankOfIndia {
         bankDetails.setTotalClients(TOTALUSERS);
     }
     public void initializeDatabase(){
-        puneDatabase.CreateDatabase();
-        puneDatabase.CreateTable();
+        puneDatabase.createDatabase();
+        puneDatabase.createTable();
     }
 
     List<BankUser> bankUsers = new ArrayList(); 
@@ -109,14 +112,15 @@ public class PuneBankController extends BankOfIndia {
     }
 
     public void userShowUserDetails(){
-        System.out.println("------------------------------------------------------------------------------------------------------");
-        System.out.printf("%10s %15s %15s %5s %15s %10s %5s %10s","NAME","ACCOUNT","ADDRESS","TYPE","NUMBER","DOB","AGE","TOTAL AMOUNT");
-        System.out.println("\n------------------------------------------------------------------------------------------------------");
-        for(int i=0;i<bankUsers.size();i++){
-            BankUser bankUser = bankUsers.get(i);
-            System.out.printf("%10s %15s %15s %5s %15s %10s %5s %10s\n",bankUser.getName(),bankUser.getUserId(),bankUser.getAddress(),bankUser.getAccountType(),bankUser.getPhoneNumber(),bankUser.getDob(),bankUser.getAge(),bankUser.getTotalAmount());
-        }
-        System.out.println("\n------------------------------------------------------------------------------------------------------");
+        puneDatabase.selectAllAccounts();
+        // System.out.println("------------------------------------------------------------------------------------------------------");
+        // System.out.printf("%10s %15s %15s %5s %15s %10s %5s %10s","NAME","ACCOUNT","ADDRESS","TYPE","NUMBER","DOB","AGE","TOTAL AMOUNT");
+        // System.out.println("\n------------------------------------------------------------------------------------------------------");
+        // for(int i=0;i<bankUsers.size();i++){
+        //     BankUser bankUser = bankUsers.get(i);
+        //     System.out.printf("%10s %15s %15s %5s %15s %10s %5s %10s\n",bankUser.getName(),bankUser.getUserId(),bankUser.getAddress(),bankUser.getAccountType(),bankUser.getPhoneNumber(),bankUser.getDob(),bankUser.getAge(),bankUser.getTotalAmount());
+        // }
+        // System.out.println("\n------------------------------------------------------------------------------------------------------");
         
     }
     private int getUserIndex(){
