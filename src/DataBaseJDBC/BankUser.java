@@ -1,6 +1,4 @@
-package DataBaseJDBC;
-
-import java.sql.Array;
+package DataBaseJDBC;;
 
 public class BankUser {
     private String name; // 1 
