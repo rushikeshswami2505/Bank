@@ -1,5 +1,7 @@
 package RBIGovernor.Pune;
 
+import java.util.List;
+
 import DataBaseJDBC.BankUser;
 import DataBaseJDBC.DatabaseController;
 public class PuneDatabase {
@@ -27,7 +29,22 @@ public class PuneDatabase {
         databaseController.insertNewCustomer(ACCOUNTTABLE,bankUser);
     }
 
-    public void selectAllAccounts() {
-        databaseController.selectAllAccounts(ACCOUNTTABLE);
+    // public void selectAllAccounts() {
+    //     databaseController.selectAllAccounts(ACCOUNTTABLE);
+    // }
+
+    public void withdrawAmount(String userId, double amount) {
+        databaseController.withdrawAmount(ACCOUNTTABLE,userId,amount);
     }
+
+    public void depositeAmount(String userId, double amount) {
+        databaseController.depositeAmount(ACCOUNTTABLE,userId,amount);
+    }
+
+
+    public List<BankUser> getAllRecords() {
+        return databaseController.getAllUser(ACCOUNTTABLE);
+    }
+
+    
 }

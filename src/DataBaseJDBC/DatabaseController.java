@@ -1,5 +1,7 @@
 package DataBaseJDBC;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseController {
 
@@ -65,22 +67,74 @@ public class DatabaseController {
         }
     }
 
-    public void selectAllAccounts(String accounttable) {
+    // public void selectAllAccounts(String accounttable) {
+    //     try(Connection conn = DriverManager.getConnection(TABLES_URL, USER, PASS);
+    //         Statement stmt = conn.createStatement();
+    //         ResultSet rs = stmt.executeQuery("SELECT name, userId, accountType, address, phoneNumber, dob, age, totalAmount FROM "+accounttable)){
+    //             System.out.println("------------------------------------------------------------------------------------------------------");
+    //             System.out.printf("%10s %15s %15s %5s %15s %10s %5s %10s","NAME","ACCOUNT","ADDRESS","TYPE","PHONE NUMBER","DOB","AGE","TOTAL AMOUNT");
+    //             System.out.println("\n------------------------------------------------------------------------------------------------------");        
+    //             while (rs.next()) {
+    //                 String accountType = rs.getInt("accountType")==1? "Saving" : "Current";
+    //                 System.out.printf("%10s %15s %15s %5s %15s %10s %5s %10s\n",rs.getString("name"),rs.getString("userId"),accountType,rs.getString("address"),rs.getString("phoneNumber"),rs.getString("dob"),rs.getInt("age"),rs.getDouble("totalAmount"));    
+    //             }
+    //             System.out.println("\n------------------------------------------------------------------------------------------------------");
+                
+    //     }
+    //     catch (Exception e) {
+    //         e.printStackTrace();        
+    //     }
+    // }
+
+    public void withdrawAmount(String accounttable, String userId, double amount) {
+        String sql = "UPDATE " + accounttable + " SET TOTALAMOUNT = (TOTALAMOUNT - ?) WHERE USERID = ?";
+        try (Connection conn = DriverManager.getConnection(TABLES_URL, USER, PASS);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDouble(1, amount);
+            pstmt.setString(2, userId);
+            pstmt.executeUpdate();
+            System.out.println("!!! Data update !!!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void depositeAmount(String accounttable, String userId, double amount) {
+        String sql = "UPDATE " + accounttable + " SET TOTALAMOUNT = (TOTALAMOUNT + ?) WHERE USERID = ?";
+        try (Connection conn = DriverManager.getConnection(TABLES_URL, USER, PASS);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDouble(1, amount);
+            pstmt.setString(2, userId);
+            pstmt.executeUpdate();
+            System.out.println("!!! Data update !!!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    } 
+
+    public List<BankUser> getAllUser(String accounttable) {
         try(Connection conn = DriverManager.getConnection(TABLES_URL, USER, PASS);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT name, userId, accountType, address, phoneNumber, dob, age, totalAmount FROM "+accounttable)){
-                System.out.println("------------------------------------------------------------------------------------------------------");
-                System.out.printf("%10s %15s %15s %5s %15s %10s %5s %10s","NAME","ACCOUNT","ADDRESS","TYPE","PHONE NUMBER","DOB","AGE","TOTAL AMOUNT");
-                System.out.println("\n------------------------------------------------------------------------------------------------------");        
+                List<BankUser> list = new ArrayList<>();
                 while (rs.next()) {
-                    String accountType = rs.getInt("accountType")==1? "Saving" : "Current";
-                    System.out.printf("%10s %15s %15s %5s %15s %10s %5s %10s\n",rs.getString("name"),rs.getString("userId"),accountType,rs.getString("address"),rs.getString("phoneNumber"),rs.getString("dob"),rs.getInt("age"),rs.getDouble("totalAmount"));    
+                    BankUser bankUser = new BankUser();
+                    bankUser.setName(rs.getString("name"));
+                    bankUser.setUserId(rs.getString("userId"));
+                    bankUser.setAccountType(rs.getInt("accountType"));
+                    bankUser.setAddress(rs.getString("address"));
+                    bankUser.setDob(rs.getString("dob"));
+                    bankUser.setAge(rs.getInt("age"));
+                    bankUser.setTotalAmount(rs.getDouble("totalamount"));
+                    list.add(bankUser);
                 }
-                System.out.println("\n------------------------------------------------------------------------------------------------------");
-                
-        }
+                return list;
+        }  
         catch (Exception e) {
             e.printStackTrace();        
         }
-    }       
+        return null;
+    }
+
+      
 }

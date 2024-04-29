@@ -15,6 +15,10 @@ public class PuneBankController extends BankOfIndia {
     public String USERIDFORMAT = "PI5367";
     public static int lastId = 76456;
 
+    
+    List<BankUser> bankUsers = new ArrayList<>(); 
+    Scanner sc = new Scanner(System.in);
+
     PuneDatabase puneDatabase = new PuneDatabase();
 
     public void setBankDetails(){
@@ -27,10 +31,10 @@ public class PuneBankController extends BankOfIndia {
     public void initializeDatabase(){
         puneDatabase.createDatabase();
         puneDatabase.createTable();
+        bankUsers = puneDatabase.getAllRecords();
+        lastId = Integer.parseInt(bankUsers.get(bankUsers.size()-1).getUserId().substring(6)) + 1;
     }
 
-    List<BankUser> bankUsers = new ArrayList<>(); 
-    Scanner sc = new Scanner(System.in);
     public void userRegistration(){
         BankUser bankUser = new BankUser();  
         System.out.print("Select account type 1. Saving 2. Current(1/2): " );
@@ -50,6 +54,11 @@ public class PuneBankController extends BankOfIndia {
             System.out.println("Please enter valid date of birth");
             return;
         }
+        if(!ac.validDate(dob[0],dob[1],dob[2])){
+            System.out.println("Please enter valid date of birth");
+            return;
+        }
+        String dobStr = dob[0]+"-"+dob[1]+"-"+dob[2];
         System.out.print("Enter phonenumber : ");
         long phone = sc.nextLong();
         double amount = 0;
@@ -66,7 +75,7 @@ public class PuneBankController extends BankOfIndia {
         bankUser.setName(name);
         bankUser.setAddress(address);
         bankUser.setAccountType(accountType);
-        bankUser.setDob(dob);
+        bankUser.setDob(dobStr);
         bankUser.setPhoneNumber(phone);    
         bankUser.setTotalAmount(amount);
         bankUser.setUserId(USERIDFORMAT+""+(lastId++));
@@ -86,6 +95,7 @@ public class PuneBankController extends BankOfIndia {
         if(bankUser.getTotalAmount()>=(amount+1000)){
             bankUser.setTotalAmount(bankUser.getTotalAmount()-amount);
             bankUsers.set(i, bankUser);
+            puneDatabase.withdrawAmount(bankUser.getUserId(),amount);
             System.out.println(">>>>>>>>>> You sucessful withdraw "+amount+" amount and your remaining balance is "+bankUser.getTotalAmount());
         }else{
             System.out.println(">>>>>>>>>> Withdrawal failed");
@@ -101,6 +111,7 @@ public class PuneBankController extends BankOfIndia {
         BankUser bankUser = bankUsers.get(i);
         bankUser.setTotalAmount(bankUser.getTotalAmount()+amount);
         bankUsers.set(i, bankUser);
+        puneDatabase.depositeAmount(bankUser.getUserId(),amount);
         System.out.println(">>>>>>>>>> You sucessful deposite "+amount+" amount and now your balance is "+bankUser.getTotalAmount());
         
     }
@@ -112,16 +123,15 @@ public class PuneBankController extends BankOfIndia {
     }
 
     public void userShowUserDetails(){
-        puneDatabase.selectAllAccounts();
-        // System.out.println("------------------------------------------------------------------------------------------------------");
-        // System.out.printf("%10s %15s %15s %5s %15s %10s %5s %10s","NAME","ACCOUNT","ADDRESS","TYPE","NUMBER","DOB","AGE","TOTAL AMOUNT");
-        // System.out.println("\n------------------------------------------------------------------------------------------------------");
-        // for(int i=0;i<bankUsers.size();i++){
-        //     BankUser bankUser = bankUsers.get(i);
-        //     System.out.printf("%10s %15s %15s %5s %15s %10s %5s %10s\n",bankUser.getName(),bankUser.getUserId(),bankUser.getAddress(),bankUser.getAccountType(),bankUser.getPhoneNumber(),bankUser.getDob(),bankUser.getAge(),bankUser.getTotalAmount());
-        // }
-        // System.out.println("\n------------------------------------------------------------------------------------------------------");
-        
+        // puneDatabase.selectAllAccounts();
+        System.out.println("------------------------------------------------------------------------------------------------------");
+        System.out.printf("%10s %15s %15s %5s %15s %10s %5s %10s","NAME","ACCOUNT","ADDRESS","TYPE","NUMBER","DOB","AGE","TOTAL AMOUNT");
+        System.out.println("\n------------------------------------------------------------------------------------------------------");
+        for(int i=0;i<bankUsers.size();i++){
+            BankUser bankUser = bankUsers.get(i);
+            System.out.printf("%10s %15s %15s %5s %15s %10s %5s %10s\n",bankUser.getName(),bankUser.getUserId(),bankUser.getAddress(),bankUser.getAccountType(),bankUser.getPhoneNumber(),bankUser.getDob(),bankUser.getAge(),bankUser.getTotalAmount());
+        }
+        System.out.println("\n------------------------------------------------------------------------------------------------------");
     }
     private int getUserIndex(){
         int i = 0;

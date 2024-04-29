@@ -1,11 +1,14 @@
 package DataBaseJDBC;
+
+import java.sql.Array;
+
 public class BankUser {
     private String name; // 1 
     private String userId; 
     private int accountType; // 2
     private String address; // 3
     private long phoneNumber; // 4
-    private int[] dob; // 5
+    private String dob; // 5
     private int age;
     private double totalAmount; // 6
 
@@ -16,7 +19,7 @@ public class BankUser {
                            "\nAddress : "+address+
                            "\nAccount Type : "+accountType+
                            "\nPhone numbe : "+phoneNumber+
-                           "\nDate of birth : "+dob[0]+"-"+dob[1]+"-"+dob[2]+
+                           "\nDate of birth : "+dob+
                            "\nAge : "+age+
                            "\nTotal Amount : "+totalAmount;
     };
@@ -55,9 +58,9 @@ public class BankUser {
         this.phoneNumber = phoneNumber;
     }
     public String getDob() {
-        return dob[0]+"-"+dob[1]+"-"+dob[2];
+        return dob;
     }
-    public void setDob(int[] dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
     public int getAge() {
